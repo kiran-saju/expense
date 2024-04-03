@@ -23,8 +23,9 @@ class Client(models.Model):
     admin=models.OneToOneField(Customuser,on_delete=models.CASCADE)
     address=models.TextField()
     gender=models.CharField(max_length=100)
-    project_name=models.CharField(max_length=100)
-    project_description=models.TextField()
+    project_name=models.CharField(max_length=100,blank=True, null=True)
+    project_description=models.TextField(blank=True, null=True)
+    created_by = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_clients')
 
     def __str__(self):
         return self.admin.first_name + " " + self.admin.last_name

@@ -111,46 +111,78 @@ def DELETE_CLIENT(request,id):
      messages.success(request,"Record updated successfully")
      return redirect('view_client')
 
+from django.shortcuts import render, get_object_or_404
+from app.forms import BillForm
+
+'''
 def create_bill(request,id):
-    bill = Bill.objects.filter(id=id)
-    context={
-        'bill': bill
-    }
-    return render(request,'STAFF/add_bill.html',context)
-
-def generate_bill(request,id=id):
+    client = get_object_or_404(Client, id=id)
     if request.method == 'POST':
-        client_name = request.POST.get('client')
-        installment_number = request.POST.get('installment_number')
-        payment_amount = request.POST.get('payment_amount')
-        due_date = request.POST.get('due_date')
-        staff_name = request.POST.get('staff_name')
-        paid_status = request.POST.get('paid_status')
+        form = BillForm(request.POST)
+        if form.is_valid():
+            bill = form.save(commit=False)
+            bill.client = client
+            # Set initial value for staff name field
+            bill.staff_name = client.created_by if client.created_by else None
+            bill.save()
+            return redirect('view_clients')  # Redirect to view clients page after adding bill
+    else:
+        initial_staff = client.created_by if client.created_by else None
+        form = BillForm(initial={'staff_name': initial_staff})  # Set initial value for staff name field
+    return render(request, 'STAFF/add_bill.html', {'form': form, 'client': client})
+'''
 
-        # Create a new Bill object and save it
-        new_bill = Bill(
-            payment_amount=payment_amount,
-            due_date=due_date,
-            paid_status=paid_status
-        )
-        new_bill.save()
 
-        new_installment= Installment(
-           installment_number = installment_number  
-        )
-        new_installment.save()
 
-        new_staff = Staff(
-             staff_name = staff_name
-        )
-        new_staff.save()
+import logging
 
-        new_client = Staff(
-             client_name = client_name 
-        )
-        new_client.save()
-        return redirect('add_bill') 
-   
-    return render(request,'STAFF/add_bill.html')
+logger = logging.getLogger(__name__)
 
+def create_bill(request, id):
+    client = get_object_or_404(Client, id=id)
     
+    # Get the staff member who created the client
+    created_by_staff = client.created_by  # Assuming created_by is the field linking to the staff member who created the client
+    
+    # Query the Installment table to get all installment numbers
+    all_installments = Installment.objects.all()
+    
+    # Get the used installment numbers for this client
+    used_installments = Bill.objects.filter(client=client).values_list('installment_number__id', flat=True)
+    
+    # Exclude used installment numbers from all_installments
+    available_installments = all_installments.exclude(id__in=used_installments)
+    
+    logger.info(f"All Installments: {all_installments}")
+    logger.info(f"Used Installments: {used_installments}")
+    logger.info(f"Available Installments: {available_installments}")
+    
+    if request.method == 'POST':
+        logger.info("Form Submitted")
+        # Create a new Bill instance and populate its fields
+        bill = Bill()
+        bill.client = client
+        bill.installment_number = Installment.objects.get(id=request.POST.get('installment_number'))
+        bill.payment_amount = request.POST.get('payment_amount')
+        bill.paid_status = request.POST.get('paid_status') == 'on'  # Assuming paid_status is a checkbox
+        # Set other fields as needed
+        bill.staff_name = created_by_staff  # Set the staff name to the one who created the client
+        
+        # Save the bill instance
+        bill.save()
+        return redirect('view_client')  # Redirect to view clients page after adding bill
+    
+    # Create the initial data for the form
+    initial_data = {
+        'installment_number': '',
+        'payment_amount': '',
+        'paid_status': False,  # Assuming paid_status is a checkbox
+        # Add other fields as needed
+        'staff_name': created_by_staff if created_by_staff else None  # Set initial staff name if available
+    }
+    
+    # Create the form with initial data and filtered installment options
+    form = BillForm(initial=initial_data)
+    form.fields['installment_number'].choices = [(inst.id, inst.installment_number) for inst in available_installments]
+    
+    return render(request, 'STAFF/add_bill.html', {'client': client, 'form': form})

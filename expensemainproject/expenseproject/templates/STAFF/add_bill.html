@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Bill</title>
+</head>
+<body>
+    <h1>Add Bill</h1> 
+ 
+    <form action="" method="POST">
+        {% csrf_token %}
+        
+        <input type="text" name="client_id" value="{% for i in client %}{{i.admin.id}}{% endfor %}" hidden>
+        <label for="client">Client:</label>
+        <input type="text" name="first_name" value="{% for i in client %}{{i.admin.first_name}}{% endfor %}"> <br><br>
+        
+        <label for="installment_number">Installment Number:</label>
+        <select name="installment_number" id="installment_number">
+            {% for installment in installments %}
+                <option value="{{ installment.id }}">{{ installment.number }}</option>
+            {% endfor %}
+        </select><br><br>
+        
+        <label for="payment_amount">Payment Amount:</label>
+        <input type="text" name="payment_amount" id="payment_amount"><br><br>
+        
+        <label for="due_date">Due Date:</label>
+        <input type="datetime-local" name="due_date" id="due_date"><br><br>
+        
+        <label for="staff_name">Staff Name:</label>
+        <select name="staff_name" id="staff_name">
+            {% for staff in staffs %}
+                <option value="{{ staff.id }}">{{ staff.name }}</option>
+            {% endfor %}
+        </select><br><br>
+        
+        <label for="paid_status">Paid Status:</label>
+        <input type="checkbox" name="paid_status" id="paid_status"><br><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

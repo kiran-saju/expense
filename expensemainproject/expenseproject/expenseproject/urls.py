@@ -1,0 +1,66 @@
+"""
+URL configuration for expenseproject project.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/5.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+from .import views,owner_view,staff_view,client_view
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('base/',views.BASE,name="base"),
+
+    #login path
+    path('',views.LOGIN,name="login"),
+    path('doLogin',views.doLogin,name='doLogin'),
+    path('logout',views.Logout,name="logout"),
+
+    #Owner pannel
+    path('Owner/Home',owner_view.HOME,name="owner_home"),
+    path('Owner/Staff/Add',owner_view.ADD_STAFF,name="add_staff"),
+    path('Owner/Staff/View',owner_view.STAFF_VIEW,name="view_staff"),
+    path('Owner/Staff/Edit/<str:id>/',owner_view.STAFF_EDIT,name='edit_staff'),
+    path('Owner/Staff/Update',owner_view.STAFF_UPDATE,name='update_staff'),
+    path('Owner/Staff/Delete/<str:id>/',owner_view.DELETE_STAFF,name='delete_staff'),
+
+    #Staff pannel
+    path('Staff/Home',staff_view.STAFF_HOME,name="staff_home"),
+    path('Staff/Client/Add',staff_view.ADD_CLIENT,name="add_client"),
+    path('Staff/Client/View',staff_view.CLIENT_VIEW,name="view_client"),
+    path('Staff/Client/Edit/<str:id>/',staff_view.CLIENT_EDIT,name='edit_client'),
+    path('Staff/Client/Update',staff_view.CLIENT_UPDATE,name='update_client'),
+    path('Staff/Client/Delete/<str:id>/',staff_view.DELETE_CLIENT,name='delete_client'),
+
+    #Installment details in staff pannel
+    # path('Staff/Client/Installmentdetails',staff_view.INSTALLMENTS,name='installments'),
+    # path('Staff/Client/Add/Installments',staff_view.ADD_INSTALLMENT,name="add_installment"),
+
+    #profile update
+    path('profile/',views.Profile,name='profile'),
+    path('profileupdate/',views.Profile_Update,name='profile_update'),
+
+    #installment table
+    path('Staff/Add/installment/',views.installment_form, name='installment_form'), 
+
+    #Bill table create_bill
+    path('Staff/Add/Bills/<str:id>/',staff_view.create_bill, name='create_bill'), 
+
+
+
+
+
+
+]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

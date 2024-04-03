@@ -3,42 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Bill</title>
+    <title>Add Bill for {{ client }}</title>
 </head>
 <body>
-    <h1>Add Bill</h1> 
- 
-    <form action="" method="POST">
+    <h1>Add Bill for {{ client }}</h1>
+    <form method="post">
         {% csrf_token %}
-        
-        <input type="text" name="client_id" value="{% for i in client %}{{i.admin.id}}{% endfor %}" hidden>
-        <label for="client">Client:</label>
-        <input type="text" name="first_name" value="{% for i in client %}{{i.admin.first_name}}{% endfor %}"> <br><br>
-        
-        <label for="installment_number">Installment Number:</label>
-        <select name="installment_number" id="installment_number">
-            {% for installment in installments %}
-                <option value="{{ installment.id }}">{{ installment.number }}</option>
+        <label for="id_installment_number">Installment Number:</label>
+        <select id="id_installment_number" name="installment_number" required>
+            {% for inst_id, inst_number in form.fields.installment_number.choices %}
+                <option value="{{ inst_id }}">{{ inst_number }}</option>
             {% endfor %}
         </select><br><br>
+        <label for="id_payment_amount">Payment Amount:</label>
+        <input type="number" id="id_payment_amount" name="payment_amount" required><br><br>
+        <label for="id_paid_status">Paid Status:</label>
+        <input type="checkbox" id="id_paid_status" name="paid_status"><br><br>
         
-        <label for="payment_amount">Payment Amount:</label>
-        <input type="text" name="payment_amount" id="payment_amount"><br><br>
+        <!-- Add the staff name field with the initial value -->
+        <label for="id_staff_name">Staff Name:</label>
+        <input type="text" id="id_staff_name" name="staff_name" value="{{ form.staff_name.value }}" readonly><br><br>
+        <!-- The "readonly" attribute ensures the field is read-only and cannot be edited by the user -->
         
-        <label for="due_date">Due Date:</label>
-        <input type="datetime-local" name="due_date" id="due_date"><br><br>
-        
-        <label for="staff_name">Staff Name:</label>
-        <select name="staff_name" id="staff_name">
-            {% for staff in staffs %}
-                <option value="{{ staff.id }}">{{ staff.name }}</option>
-            {% endfor %}
-        </select><br><br>
-        
-        <label for="paid_status">Paid Status:</label>
-        <input type="checkbox" name="paid_status" id="paid_status"><br><br>
-        
-        <input type="submit" value="Submit">
+        <!-- Add other fields as needed -->
+
+        <button type="submit">Submit</button>
     </form>
 </body>
 </html>

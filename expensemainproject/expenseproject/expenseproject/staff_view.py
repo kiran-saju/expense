@@ -134,15 +134,14 @@ def create_bill(request,id):
 
 
 
+from django.shortcuts import render, get_object_or_404
+from app.forms import BillForm
 import logging
 
 logger = logging.getLogger(__name__)
 
 def create_bill(request, id):
     client = get_object_or_404(Client, id=id)
-    
-    # Get the staff member who created the client
-    created_by_staff = client.created_by  # Assuming created_by is the field linking to the staff member who created the client
     
     # Query the Installment table to get all installment numbers
     all_installments = Installment.objects.all()
@@ -152,37 +151,25 @@ def create_bill(request, id):
     
     # Exclude used installment numbers from all_installments
     available_installments = all_installments.exclude(id__in=used_installments)
-    
-    logger.info(f"All Installments: {all_installments}")
-    logger.info(f"Used Installments: {used_installments}")
-    logger.info(f"Available Installments: {available_installments}")
+
+    # Construct choices list
+    choices = [(inst.id, inst.installment_number) for inst in available_installments]
     
     if request.method == 'POST':
-        logger.info("Form Submitted")
-        # Create a new Bill instance and populate its fields
-        bill = Bill()
-        bill.client = client
-        bill.installment_number = Installment.objects.get(id=request.POST.get('installment_number'))
-        bill.payment_amount = request.POST.get('payment_amount')
-        bill.paid_status = request.POST.get('paid_status') == 'on'  # Assuming paid_status is a checkbox
-        # Set other fields as needed
-        bill.staff_name = created_by_staff  # Set the staff name to the one who created the client
+        # Process form submission
+        form = BillForm(request.POST)
+        if form.is_valid():
+            bill = form.save(commit=False)
+            bill.client = client
+            bill.save()
+            return redirect('view_client') 
+    else:
+        # Create the form with choices for installment_number field
+        form = BillForm()
+        form.fields['installment_number'].choices = choices
         
-        # Save the bill instance
-        bill.save()
-        return redirect('view_client')  # Redirect to view clients page after adding bill
-    
-    # Create the initial data for the form
-    initial_data = {
-        'installment_number': '',
-        'payment_amount': '',
-        'paid_status': False,  # Assuming paid_status is a checkbox
-        # Add other fields as needed
-        'staff_name': created_by_staff if created_by_staff else None  # Set initial staff name if available
-    }
-    
-    # Create the form with initial data and filtered installment options
-    form = BillForm(initial=initial_data)
-    form.fields['installment_number'].choices = [(inst.id, inst.installment_number) for inst in available_installments]
-    
     return render(request, 'STAFF/add_bill.html', {'client': client, 'form': form})
+
+def view_bills_staff(request):
+    bills = Bill.objects.all()
+    return render(request, 'bills.html', {'bills': bills})

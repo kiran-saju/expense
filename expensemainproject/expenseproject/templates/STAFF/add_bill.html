@@ -1,33 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Bill for {{ client }}</title>
-</head>
-<body>
-    <h1>Add Bill for {{ client }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="id_installment_number">Installment Number:</label>
-        <select id="id_installment_number" name="installment_number" required>
-            {% for inst_id, inst_number in form.fields.installment_number.choices %}
-                <option value="{{ inst_id }}">{{ inst_number }}</option>
-            {% endfor %}
-        </select><br><br>
-        <label for="id_payment_amount">Payment Amount:</label>
-        <input type="number" id="id_payment_amount" name="payment_amount" required><br><br>
-        <label for="id_paid_status">Paid Status:</label>
-        <input type="checkbox" id="id_paid_status" name="paid_status"><br><br>
-        
-        <!-- Add the staff name field with the initial value -->
-        <label for="id_staff_name">Staff Name:</label>
-        <input type="text" id="id_staff_name" name="staff_name" value="{{ form.staff_name.value }}" readonly><br><br>
-        <!-- The "readonly" attribute ensures the field is read-only and cannot be edited by the user -->
-        
-        <!-- Add other fields as needed -->
-
-        <button type="submit">Submit</button>
-    </form>
-</body>
-</html>
+<form method="post">
+    {{user.first_name}}
+    {% csrf_token %}
+    <!-- Other form fields -->
+    <label for="">Installment number:</label>
+    {{ form.installment_number }}
+    <br><br>
+    <label for="">Payment amount: </label>
+    {{ form.payment_amount }}
+    <br><br>
+    <label for="">Staff Name:</label>
+   <input type="text" name="first_name" value=" {{user.first_name}}" readonly>
+    <br><br>
+    <label for="">Paid status:</label>
+    {{ form.paid_status }}
+    <br><br>
+    <button type="submit">Submit</button>
+</form>

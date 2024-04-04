@@ -57,6 +57,7 @@ urlpatterns = [
 
     #Bill table create_bill
     path('Staff/Add/Bills/<str:id>/',staff_view.create_bill, name='create_bill'), 
+    path('Staff/View/Bills/',staff_view.view_bills_staff, name='view_bills_staff'), 
 
 
 

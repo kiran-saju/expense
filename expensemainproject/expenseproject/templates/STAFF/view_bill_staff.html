@@ -11,16 +11,20 @@
         <thead>
             <tr>
                 <th>Bill Id</th>
+                <th>Client Name</th>
                 <th>Installment Section</th>
                 <th>Amount</th>
+                <th>Paid</th>
             </tr>
         </thead>
         <tbody>
             {% for i in bills %}
             <tr>
                 <td>{{i.id}}</td>
+                <td>Kiran</td>
                 <td>{{i.installment_number}}</td>
                 <td>{{i.payment_amount}}</td>
+                <td>{{i.paid_status}}</td>
                 <td>
                 
                     <a href="">Edit</a>

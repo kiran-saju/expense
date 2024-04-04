@@ -170,6 +170,6 @@ def create_bill(request, id):
         
     return render(request, 'STAFF/add_bill.html', {'client': client, 'form': form})
 
-def view_bills_staff(request):
+def view_bills_staff(request,):
     bills = Bill.objects.all()
-    return render(request, 'bills.html', {'bills': bills})
+    return render(request, 'STAFF/view_bill_staff.html', {'bills': bills})

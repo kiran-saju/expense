@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<form action="{% url 'profile_update' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="">Profile Picture</label> <input type="file" name="profile_pic" value=""> <br> <br>
+    <label for="">First name</label> <input type="text" name="first_name" value="{{user.first_name}}"><br> <br>
+    <label for="">Last name</label> <input type="text" name="last_name" value="{{user.last_name}}"><br> <br>
+    <label for="">Email</label> <input type="email" name="email"  readonly value="{{user.email}}"><br> <br>
+    <label for="">Username</label> <input type="text" name="username" value="{{user.username}}"  readonly  ><br> <br>
+    <label for="">Password</label> <input type="password" name="password" value="" placeholder="fill only if you want to change password"><br> <br>
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>

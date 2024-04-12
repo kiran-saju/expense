@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <a href="{% url 'staff_home' %}">HOME</a>
+    <h1>Make purchase</h1>
+<form method="post">
+  {% csrf_token %}
+  <label for=""> supplier:</label>
+    {{ form.supplier }}
+    <br><br>
+ 
+    <label for="">Staff Name:</label>
+   <input type="text" name="first_name" value=" {{user.first_name}}&nbsp;{{user.last_name}}" readonly>
+    <br><br>
+
+    <label for="">Row Materials: </label>
+    {{ form.row_materials }}
+    <br><br>
+    
+   <label for="">Quantity:</label>
+    {{ form.quantity }}
+    <br><br>
+
+    <label for="">Payment Amount</label>
+    {{ form.payment_amount }}
+    <br><br>
+
+    <!-- <label for="">Due Date</label>
+    {{ form.due_date }}
+    <br><br>
+
+    
+    <label for="">Due Date</label>
+    {{ form.due_date }}
+    <br><br>
+
+     -->
+    <label for="">Paid Status</label>
+    {{ form.paid_status }}
+    <br><br>
+  <button type="submit">Save</button>
+</form>
+</body>
+</html>

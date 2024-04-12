@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="{% url 'staff_home' %}">HOME</a>
+    <h1>Client Details</h1>
+    <table border="1">
+        <thead>
+            <tr>
+             <th>id</th>
+             <th>Image</th>
+             <th>Name</th>
+             <th>Mail Id</th>
+             <th>Gender</th>
+             <th>Address</th>
+             <th>Project</th>
+             <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in client %} 
+            <tr>
+                <td>{{i.id}}</td>
+                <td><img src="/{{i.admin.profile_pic}}" alt="" height="50px" width="50px"></td>
+                <td>{{i.admin.first_name}}&nbsp;{{i.admin.last_name}}</td>
+                <td>{{i.admin.email}}</td>
+                <td>{{i.gender}}</td>
+                <td>{{i.address}}</td>
+                <td>{{i.project_name}}</td>
+                <td>{{i.project_description}}</td>
+                
+            </tr>
+            {% endfor %} 
+        </tbody>
+    </table>
+</body>
+</html>

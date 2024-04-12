@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    This is Staff Page
+    <h4><strong>welcome </strong><span>{{user.first_name}}&nbsp;{{user.last_name}}</span></h4>
+    <a href="{% url 'add_client' %}">Add Client</a> <br><br>
+    <a href="{% url 'view_client' %}">View Client</a> <br><br>
+    <a href="{% url 'installment_form' %}">Add Installments</a> <br><br>
+    <a href="{% url 'supplier_form' %}">Add suppliers</a><br><br>
+    <a href="{% url 'view_suppliers' %}">View Suppliers</a><br><br>
+    <a href="{% url 'add_row_materials' %}">Add Row Materials</a> <br><br>
+    <a href="{% url 'view_row_materials' %}">View Row Materials</a> <br><br>
+    <a href="{% url 'purchase_details_create' %}">Make Purchases</a> <br> <br>
+    <a href="{% url 'purchase_details_list' %}">Purchase Details List</a> <br> <br>
+   
+    <a href="{% url 'logout' %}">Logout</a><br><br>
+</body>
+</html>

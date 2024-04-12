@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="{% url 'owner_home' %}">Home</a>
+    This is Owner Page
+    <h4><strong>welcome</strong><span>{{user.first_name}}&nbsp;{{user.last_name}}</span></h4>
+    <a href="{% url 'profile' %}">My profile</a> <br> <br>
+    <a href="{% url 'add_staff' %}">staff Add</a> <br> <br>
+    <a href="{% url 'view_staff' %}">Staff view</a> <br> <br>
+    <a href="{% url 'client_all_details' %}">Client List</a> <br> <br>
+    <a href="{% url 'owner_view_supplier' %}">Supplier List</a> <br> <br>
+    <a href="{% url 'view_bills_owner' %}">Client Bills</a> <br> <br>
+
+    <a href="{% url 'view_total_balance_per_client' %}">Bills Per Vlient</a> <br><br>
+    <a href="{% url 'logout' %}">Logout</a> <br> <br>
+</body>
+</html>

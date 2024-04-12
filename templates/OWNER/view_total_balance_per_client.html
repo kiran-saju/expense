@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Balances</title>
+</head>
+<body>
+    <h1>Client Balances</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Client Name</th>
+                <th>Total Bill Charged</th> 
+                <th>Paid Amount</th>
+                <th>Balance Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client_id, client_data in client_balances.items %}
+            <tr>
+                <td>{{ client_data.client_name }}</td>
+                <td>{{ client_data.total_amount }}</td>
+                <td>{{ client_data.paid_amount }}</td>
+                <td>{{ client_data.balance_amount }}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <h1>Purchase Details</h1>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Purchase Id</th>
+            <th>Supplier</th>
+            <th>Staff Name</th>
+            <th>Row Materials</th>
+            <th>Quantity in Kg</th>
+            <th>Payment Amount</th>
+            <th>Due Date</th>
+            <th>Paid Date</th>
+            <th>Paid Status</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for purchase in purchases%}
+        <tr>
+            <td>{{purchase.id}}</td>
+            <td>{{ purchase.supplier }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ purchase.row_materials }}</td>
+            <td>{{ purchase.quantity }}</td>
+            <td>{{ purchase.payment_amount }}</td>
+            <td>{{ purchase.due_date }}</td>
+            <td>{{ purchase.paid_date }}</td>   
+            <td>{{ purchase.paid_status }}</td> 
+            <td>
+                <a href="{% url 'purchase_details_update' purchase.id %}">Update</a>
+            </td>
+            <td>
+                <a href="{% url 'purchase_details_delete' purchase.id %}">Delete</a> 
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,32 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Balances</title>
-</head>
-<body>
-    <h1>Client Balances</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Client Name</th>
-                <th>Total Bill Charged</th> 
-                <th>Paid Amount</th>
-                <th>Balance Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for client_id, client_data in client_balances.items %}
-            <tr>
-                <td>{{ client_data.client_name }}</td>
-                <td>{{ client_data.total_amount }}</td>
-                <td>{{ client_data.paid_amount }}</td>
-                <td>{{ client_data.balance_amount }}</td>
-                
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+{% extends 'OWNER/ownerbase.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+<table id="example" class="table table-striped">
+    <thead>
+        <tr>
+            <th colspan="5" style="text-align: center; font-size: large;">CLIENT BILLS</th>
+        </tr>
+        <tr>
+            <th>Client Id</th>
+            <th>Client Name</th>
+            <th>Total Bill Charged</th> 
+            <th>Paid Amount</th>
+            <th>Balance Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client_id, client_data in client_balances.items %}
+        <tr>
+            <td>{{ client_id }}</td>
+            <td><a href="{% url 'client_bills' client_id=client_id %}" style="text-decoration: none;color: black;">{{ client_data.client_name }}</a></td>
+
+            <td>{{ client_data.total_amount }}</td>
+            <td>{{ client_data.paid_amount }}</td>
+            <td>{{ client_data.balance_amount }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No data available</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'view_bills_owner' %}" class="btn btn-primary btn-sm" style="margin-left: 450px; text-decoration: none;">More Details</a>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#example').on('click', 'tbody tr', function() {
+            var clientId = $(this).find('td:first-child').text();
+            window.location.href = "/client/" + clientId + "/";
+        });
+    });
+</script>
+
+{% endblock %}

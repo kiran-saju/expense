@@ -1,15 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Welcome To Client Home Page</h1>
-     <h2>Hello {{user.first_name}}</h2>
 
-     <a href="{% url 'client_bills' %}">My Bills</a> <br><br>
-     <a href="{% url 'logout' %}">Logout</a>
-</body>
-</html>
+{% extends 'CLIENT/clientbase.html' %}
+    
+{% block content%}
+
+<style>
+    
+.rectangle {
+
+  background-color: #f8f9fa; 
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  padding: 20px; /* Padding inside the div */
+  margin-bottom: 80px; /* Spacing between divs */
+  
+  
+}
+
+</style>
+<h3 style="text-align: center;">Welcome To Client Home Page</h3> <br><br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="rectangle">
+    
+      
+        <h4>Total Amount Paid</h4>
+        <p>${{ total_payment }}</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="rectangle">
+        <h4>Total Balance </h4>
+        <p>${{ total_balance }}</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+

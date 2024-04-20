@@ -1,8 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Change Paid Status</title>
-</head>
+{% extends 'STAFF/staffbase.html' %}
+{% block title %}Dashboard{% endblock %}
+
+
+
+{% block content %}
+
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <body>
     <a href="{% url 'staff_home' %}">HOME</a>
     <h2>Change Paid Status</h2>
@@ -11,5 +22,6 @@
         {{ form.as_p }}
         <button type="submit">Save Changes</button>
     </form>
-</body>
-</html>
+
+
+    {% endblock %}

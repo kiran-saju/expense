@@ -1,0 +1,51 @@
+
+
+{% extends 'OWNER/ownerbase.html' %}
+
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<table id="example" class="table table-striped">
+     <thead>
+        <tr>
+            <th colspan="10" style="text-align: center; font-size: large;">SUPPLIERS LIST</th>
+        </tr>
+        <tr>
+            <th>Purchase Id</th>
+            <th>Supplier</th>
+            <th>Staff Name</th>
+            <th>Row Materials</th>
+            <th>Quantity in Kg</th>
+            <th>Payment Amount</th>
+            <th>Due Date</th>
+            <th>Paid Date</th>
+            <th>Paid Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in purchase %}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{ i.supplier }}</td>
+            <td>{{i.staff_name}}</td>
+            <td>{{ i.row_materials }}</td>
+            <td>{{ i.quantity }}</td>
+            <td>{{ i.payment_amount }}</td>
+            <td>{{ i.due_date }}</td>
+            <td>{{ i.paid_date }}</td>   
+            <td>{{ i.paid_status }}</td> 
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+
+{% endblock %}

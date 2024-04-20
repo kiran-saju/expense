@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+
+
+{% block title %}Dashboard{% endblock %}
+
+
+
+{% block content %}
+
+{% include 'INCLUDES/sidebar.html' %}
+<form class="form-container"  action="{% url 'profile_update' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+Profile Picture: <input class="form-input file-input" type="file" name="profile_pic" value=""> <br> <br>
+First name:<input class="form-input" type="text" name="first_name" value="{{user.first_name}}"><br> <br>
+Last name:<input class="form-input" type="text" name="last_name" value="{{user.last_name}}"><br> <br>
+Email: <input class="form-input" type="email" name="email"  readonly value="{{user.email}}"><br> <br>
+Username:<input class="form-input" type="text" name="username" value="{{user.username}}"  readonly  ><br> <br>
+Password: <input class="form-input" type="password" name="password" value="" placeholder="fill only if you want to change password"><br> <br>
+    <button class="submit-btn" type="submit">Update</button>
+</form>
+
+
+{% endblock %}

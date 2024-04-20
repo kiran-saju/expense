@@ -1,0 +1,39 @@
+{% extends 'STAFF/staffbase.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<table id="example" class="table table-striped">
+     <thead>
+            <tr>
+             <th>id</th>
+             <th>Name</th>
+             <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in rowmaterials %} 
+            <tr>
+                <td>{{i.id}}</td>
+                <td>{{i.item_name}}</td>
+                <td>
+                    <a href="{% url 'delete_row_materials' i.id %}"  class="btn btn-danger btn-sm">Delete</a> 
+                </td>
+            </tr>
+            {% endfor %} 
+        </tbody>
+    </table>
+    <a href="{% url 'add_row_materials' %}"  class="btn btn-primary btn-sm">Add More</a>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+
+    {% endblock %}

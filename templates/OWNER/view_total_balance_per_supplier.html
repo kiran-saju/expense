@@ -1,0 +1,43 @@
+
+{% extends 'OWNER/ownerbase.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<table id="example" class="table table-striped">
+     <thead>
+        <tr>
+            <th colspan="10" style="text-align: center; font-size: large;">SUPPLIER'S BILLS</th>
+        </tr>
+            <tr>
+                <th>Supplier Id</th>
+                <th>Supplier Name</th>
+                <th>Total Bill Charged</th> 
+                <th>Paid Amount</th>
+                <th>Balance Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for supplier_id, supplier_data in supplier_balances.items %}
+            <tr>
+                <td>{{ supplier_id}}</td>
+                
+                <td><a href="{% url 'supplier_bills' supplier_id=supplier_id %}" style="text-decoration: none; color: black;">{{ supplier_data.supplier_name }}</a></td>
+                <td>{{ supplier_data.total_amount }}</td>
+                <td>{{ supplier_data.paid_amount }}</td>
+                <td>{{ supplier_data.balance_amount }}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a  href="{% url 'supplier_all_details' %}" style="margin-left: 450px; text-decoration: none;" class="btn btn-primary btn-sm">More Details</a>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+    
+    
+    {% endblock %}

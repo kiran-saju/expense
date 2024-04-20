@@ -1,15 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <a href="{% url 'staff_home' %}">HOME</a>
-    <h1>Client Details</h1>
-    <table border="1">
-        <thead>
+
+
+{% extends 'OWNER/ownerbase.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<table id="example" class="table table-striped">
+     <thead>
+        <tr>
+            <th colspan="10" style="text-align: center; font-size: large;">CLIENT LIST</th>
+        </tr>
             <tr>
              <th>id</th>
              <th>Image</th>
@@ -37,5 +39,12 @@
             {% endfor %} 
         </tbody>
     </table>
-</body>
-</html>
+
+    
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+    
+    {% endblock %}

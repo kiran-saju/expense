@@ -4,10 +4,12 @@ from django.contrib import messages
 from app.models import Customuser, Installment, PurchaseDetails, Staff,Client,Bill, Supplier, RowMaterials
 from app.forms import BillForm,BillPaidStatusForm,SupplierForm,RowMaterialForm,PurchaseForm
 
-
+@login_required
 def STAFF_HOME(request):
+    
     return render(request,'STAFF/staff_home.html')
 
+@login_required
 def ADD_CLIENT(request):
 
     if request.method=="POST":
@@ -52,6 +54,7 @@ def ADD_CLIENT(request):
             return redirect('add_client')
     return render(request,'STAFF/add_client.html')
 
+@login_required
 def CLIENT_VIEW(request):
     client = Client.objects.all()
     context={
@@ -59,6 +62,8 @@ def CLIENT_VIEW(request):
     }
     return render(request,'STAFF/view_client.html',context)
 
+
+@login_required
 def CLIENT_EDIT(request,id):
     client = Client.objects.filter(id=id)
     context={
@@ -66,6 +71,8 @@ def CLIENT_EDIT(request,id):
     }
     return render(request,'STAFF/edit_client.html',context)
 
+
+@login_required
 def CLIENT_UPDATE(request):
     if request.method =='POST':
         client_id= request.POST.get('client_id')
@@ -106,7 +113,7 @@ def CLIENT_UPDATE(request):
     return render(request,'STAFF/edit_client.html')
 
 
-
+@login_required
 def DELETE_CLIENT(request,id):
      client=Client.objects.get(id=id)
      client.delete()
@@ -117,7 +124,7 @@ def DELETE_CLIENT(request,id):
 
 import logging
 logger = logging.getLogger(__name__)
-
+@login_required
 def create_bill(request, id):
     client = get_object_or_404(Client, id=id)
     
@@ -144,7 +151,7 @@ def create_bill(request, id):
         
     return render(request, 'STAFF/add_bill.html', {'client': client, 'form': form})
 
-
+@login_required
 def view_bills_staff(request, client_id):
     client = Client.objects.get(id=client_id)
     bills = Bill.objects.filter(client=client)
@@ -153,6 +160,7 @@ def view_bills_staff(request, client_id):
 
 
 logger = logging.getLogger(__name__)
+@login_required
 def change_paid_status(request,bill_id):
     bill = get_object_or_404(Bill,id=bill_id)
     if request.method == 'POST':
@@ -165,14 +173,14 @@ def change_paid_status(request,bill_id):
     return render(request, 'STAFF/change_paid_status.html', {'form': form, 'bill_id': bill_id})
 
 
-  
+@login_required
 def DELETE_BILL(request,id):
      bill=Bill.objects.get(id=id)
      bill.delete()
      messages.success(request,"Record updated successfully")
      return redirect('view_bills_staff')
 
-
+@login_required
 def supplier_form(request):
     if request.method == 'POST':
         form = SupplierForm(request.POST)
@@ -181,23 +189,24 @@ def supplier_form(request):
             return redirect('view_suppliers')
     else:
         form = SupplierForm()
-    return render(request, 'supplier_form.html', {'form': form})
+    return render(request, 'STAFF/supplier_form.html', {'form': form})
 
+@login_required
 def view_suppliers(request):
     suppliers = Supplier.objects.all()
     context={
         'suppliers': suppliers
     }
-    return render(request, 'view_suppliers.html',context)
+    return render(request, 'STAFF/view_suppliers.html',context)
 
-
+@login_required
 def delete_supplier(request,id):
     supplier=Supplier.objects.get(id=id)
     supplier.delete()
     messages.success(request,"Successfully Deleted an item")
     return redirect("view_suppliers")
 
-
+@login_required
 def row_materials_form(request):
     if request.method == 'POST':
         form = RowMaterialForm(request.POST)
@@ -206,15 +215,17 @@ def row_materials_form(request):
             return redirect('view_row_materials')
     else:
             form= RowMaterialForm()
-    return render(request,'rowmaterial_form.html', {'form': form})
+    return render(request,'STAFF/rowmaterial_form.html', {'form': form})
 
+@login_required
 def view_row_materials(request):
     rowmaterials= RowMaterials.objects.all()
     context={
         'rowmaterials':rowmaterials
     }
-    return render(request,"view_row_materials.html",context)
+    return render(request,"STAFF/view_row_materials.html",context)
 
+@login_required
 def delete_row_materials(request,id):
     rowmaterials=RowMaterials.objects.get(id=id)
     rowmaterials.delete()
@@ -223,21 +234,26 @@ def delete_row_materials(request,id):
 
 #for purchase pannel
 
+@login_required
 def purchase_details_create(request):
     if request.method == 'POST':
         form = PurchaseForm(request.POST)
         if form.is_valid():
-            form.save()
+            purchase = form.save(commit=False)
+            purchase.staff_name = request.user.staff  # Associate purchase with logged-in staff
+            purchase.save()
             return redirect('purchase_details_list')
     else:
-          form=PurchaseForm() 
+        form = PurchaseForm()
     return render(request, 'STAFF/purchase_details_form.html', {'form': form})
 
-
+@login_required
 def purchase_details_list(request):
-    purchases = PurchaseDetails.objects.all()
+    staff = request.user.staff  # Get the staff associated with the logged-in user
+    purchases = PurchaseDetails.objects.filter(staff_name=staff)  # Filter purchases by staff
     return render(request, 'STAFF/purchase_details_list.html', {'purchases': purchases})
 
+@login_required
 def purchase_details_update(request,id):
     purchase = get_object_or_404(PurchaseDetails,id=id)
     if request.method == 'POST':
@@ -249,9 +265,33 @@ def purchase_details_update(request,id):
         form = PurchaseForm(instance=purchase)
     return render(request, 'STAFF/purchase_details_form.html', {'form': form})
 
+
+@login_required
 def purchase_details_delete(request,id):
     purchase = RowMaterials.objects.get(id=id)
     purchase.delete()
     messages.success(request,"Successfully Deleted an item")
     return redirect('purchase_details_list')
 
+
+def total_clients_created_by_staff(request):
+
+
+    return render(request, 'total_clients_created_by_staff.html')
+
+def view_clients_by_staff(request, staff_id):
+    try:
+        # Retrieve the staff member based on the provided ID
+        staff = Staff.objects.get(id=staff_id)
+        
+        # Filter clients based on the staff member
+        clients = Client.objects.filter(created_by=staff)
+        
+        context = {
+            'staff': staff,
+            'clients': clients
+        }
+        return render(request, 'STAFF/view_clients_by_staff.html', context)
+    except Staff.DoesNotExist:
+        # Handle the case where the staff member does not exist
+        return redirect('error_page')  # Redirect to an error page or handle it as needed

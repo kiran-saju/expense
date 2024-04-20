@@ -10,6 +10,7 @@ class Customuser(AbstractUser):
     profile_pic=models.ImageField(upload_to='media/profile_pic')
 
 class Staff(models.Model):
+   
     admin=models.OneToOneField(Customuser, on_delete=models.CASCADE)
     address=models.TextField()
     gender=models.CharField(max_length=100)
@@ -25,7 +26,6 @@ class Client(models.Model):
     gender=models.CharField(max_length=100)
     project_name=models.CharField(max_length=100)
     project_description=models.TextField()
-    
     created_by = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_clients')
 
     def __str__(self):
@@ -39,13 +39,15 @@ class Installment(models.Model):
 
     def __str__(self):
         return self.installment_number
+    
 #for bill generation for client
 class Bill(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE,blank=True, null=True)
     installment_number= models.ForeignKey(Installment,on_delete=models.CASCADE, blank=True, null=True)
     payment_amount=models.DecimalField(max_digits=10,decimal_places=2)
-    due_date= models.DateTimeField(auto_now_add=True)
-    paid_date= models.DateTimeField(auto_now=True)
+    due_date= models.DateField(auto_now_add=True,blank=True, null=True)
+    paid_date= models.DateField(auto_now=True,blank=True, null=True)
+
     staff_name=models.ForeignKey(Staff,on_delete=models.CASCADE,blank=True, null=True)
     paid_status= models.BooleanField(default=False)
 
@@ -69,8 +71,10 @@ class RowMaterials(models.Model):
 class PurchaseDetails(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE,blank=True, null=True)
     staff_name=models.ForeignKey(Staff,on_delete=models.CASCADE,blank=True, null=True)
-    row_materials= models.ForeignKey(RowMaterials,on_delete=models.CASCADE, blank=True, null=True)
-    quantity=models.DecimalField(max_digits=10,decimal_places=2)
+    # row_materials= models.ForeignKey(RowMaterials,on_delete=models.CASCADE, blank=True, null=True)
+    items=models.CharField(max_length=500,blank=True, null=True)
+    billno=models.CharField(max_length=200,blank=True, null=True)
+    # quantity=models.DecimalField(max_digits=10,decimal_places=2)
     payment_amount=models.DecimalField(max_digits=10,decimal_places=2)
     due_date= models.DateTimeField(auto_now_add=True)
     paid_date= models.DateTimeField(auto_now=True)

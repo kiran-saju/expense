@@ -9,7 +9,7 @@ def BASE(request):
     return render(request,'base.html')
 
 def LOGIN(request):
-    return render(request,'login.html')
+    return render(request,'VIEWS/login.html')
 
 @login_required
 def Logout(request):
@@ -18,32 +18,48 @@ def Logout(request):
 
 def doLogin(request):
     if request.method == "POST":
-       user = EmailBackEnd.authenticate(request,
-                                        username=request.POST.get('email'),
-                                        password=request.POST.get('password'),)
-       if user!=None:
-           login(request,user)
-           user_type = user.user_type
-           if user_type == '1':
-               return redirect('owner_home')
-           elif user_type == '2':
-               return redirect('staff_home')
-           elif user_type == '3':
-                return redirect('client_home')
-           else:
-               messages.error(request,'Email and Password Are Invalid !')
-               return redirect('login')
-       else:
-           messages.error(request,'Email and Password Are Invalid !')
-           return redirect('login')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
+        # Validate inputs
+        if not email or not password:
+            messages.error(request, 'Email and password are required.')
+            return redirect('login')
+
+        user = EmailBackEnd.authenticate(request, username=email, password=password)
+
+        if user is not None:
+            login(request, user)
+            user_type = user.user_type
+
+            if user_type == '1':
+                return redirect('owner_home')
+            elif user_type == '2':
+                return redirect('staff_home')
+            elif user_type == '3':
+                return redirect('client_home')
+            else:
+                # Unknown user type
+                messages.error(request, 'Unknown user type.')
+                return redirect('login')
+        else:
+            # Authentication failed
+            messages.error(request, 'Email or password is incorrect.')
+            return redirect('login')
+    else:
+        # Invalid request method
+        messages.error(request, 'Invalid request method.')
+        return redirect('login')
+
+@login_required
 def Profile(request):
     user= Customuser.objects.get(id= request.user.id)
     context ={
         "user":user
     }
-    return render(request,'profile.html',context)
+    return render(request,'VIEWS/profile.html',context)
 
+@login_required
 def Profile_Update(request):
     if request.method == 'POST':
         profile_pic= request.FILES.get('profile_pic')
@@ -71,6 +87,7 @@ def Profile_Update(request):
 
 
 from app.forms import InstallmentForm
+@login_required
 def installment_form(request):
     if request.method == 'POST':
         form = InstallmentForm(request.POST)
@@ -79,4 +96,4 @@ def installment_form(request):
             return redirect('staff_home')  # Assuming you have a URL named 'success'
     else:
         form = InstallmentForm()
-    return render(request, 'installment_form.html', {'form': form})
+    return render(request, 'VIEWS/installment_form.html', {'form': form})

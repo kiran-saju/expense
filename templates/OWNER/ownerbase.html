@@ -1,0 +1,118 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Builder's Expense Tracker{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{% static 'clientbase.css' %}">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-md">
+            <a class="navbar-brand" href="#">Builder's Expense Tracker</a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="#"><h5>Hello {{user.first_name}}</h5></a>
+                <span class="mx-2"></span>
+                <a class="nav-link" href="#"></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 bg-dark text-light"> <!--width of sidebar-->
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'owner_home' %}">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'add_staff' %}">ADD STAFF</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'view_staff' %}">STAFF LIST</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'client_all_details' %}">CLIENT LIST</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'supplier_all_details' %}">SUPPLIERS</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'view_total_balance_per_client' %}">CLIENT BILLS</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'view_total_balance_per_supplier' %}">SUPPLIER BILLS</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'total_clients' %}">Total Clients</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'total_clients_bills_charge' %}">Bills Charged to clients</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'client_total_paid_amount' %}">client total paid amount</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'client_total_balance_payment' %}">client total balance payment</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'total_payment_to_suppliers' %}">Paid Amount To Suppliers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'total_balance_to_supplier' %}">Balance Payment Suppliers</a>
+                    </li>
+             
+                  
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'logout' %}">LOGOUT</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Data Table -->
+            <div class="col-md-9"> <!--give you adjust the position of table-->
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-light row-md-2" style="height: 110px;">
+        <div class="container-fluid">
+
+                <!-- Copyright Information Section -->
+                <div class="col-md-38 text-md-left text-center">
+                    <span>&copy; 2024 Builder's Expense Tracker. All rights reserved.</span>
+                </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+</body>
+
+</html>

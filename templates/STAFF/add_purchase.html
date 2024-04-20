@@ -1,4 +1,20 @@
-<a href="{% url 'staff_home' %}">HOME</a>
+{% extends 'STAFF/staffbase.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+
+
+{% block content %}
+
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <form method="post">
    <h1>Make purchase with {{supplier}}</h1>
     {% csrf_token %}
@@ -38,3 +54,6 @@
 
     <button type="submit">Submit</button>
 </form>
+
+
+{% endblock %}

@@ -39,18 +39,27 @@ urlpatterns = [
 
     path('Owner/Client/All/Details/',owner_view.CLIENT_ALL_DETAILS,name="client_all_details"),
     path('Owner/view/client/bills/',owner_view.view_bills_owner,name='view_bills_owner'),
-    #path('Owner/view/client/consolidated/bills',owner_view.view_consolidated_bills,name="view_consolidated_bills"),
     path('Owner/view/client//bills/totalbalance/',owner_view.get_total_balance_per_client,name="get_total_balance_per_client"),
     path('Owner/view/client//bills/view/totalbalance/',owner_view.view_total_balance_per_client,name="view_total_balance_per_client"),
+    path('client/<int:client_id>/', owner_view.client_bills, name='client_bills'),
 
-    path('Owner/Supplier/View/',owner_view.OWNER_VIEW_SUPPLIER,name="owner_view_supplier"),
-    path('Owner/Supplier/Details/<str:id>/',owner_view.SUPPLIER_DETAILS,name='supplier_details'),
+ 
     path('Owner/Supplier/All/Details/',owner_view.SUPPLIER_ALL_DETAILS,name="supplier_all_details"),
-    # path('owner/view/client/bills/', owner_view.OWNER_CLIENT_BILLS, name='owner_client_bills'),
+    path('Owner/view/supplier//bills/totalbalance/',owner_view.get_total_balance_per_supplier,name="get_total_balance_per_supplier"),
+    path('Owner/view/supplier//bills/view/totalbalance/',owner_view.view_total_balance_per_supplier,name="view_total_balance_per_supplier"),
+    path('supplier/<int:supplier_id>/', owner_view.supplier_bills, name='supplier_bills'),
+    path('total-clients/', owner_view.total_clients, name='total_clients'),
+    path('total-clients-bills-charge/', owner_view.total_clients_bills_charge, name='total_clients_bills_charge'),
+    path('total-payment-to-suppliers/', owner_view.total_payment_to_suppliers, name='total_payment_to_suppliers'),
+    path('total-balance-to-supplier/',owner_view.total_balance_to_supplier,name='total_balance_to_supplier'),
+    path('client-total-paid_-mount/',owner_view.client_total_paid_amount,name='client_total_paid_amount'),
+    path('client-total-balance-payment/',owner_view.client_total_balance_payment,name='client_total_balance_payment'),
+
+    
 
     #Staff pannel
     path('Staff/Home',staff_view.STAFF_HOME,name="staff_home"),
-    path('Staff/Client/Add',staff_view.ADD_CLIENT,name="add_client"),
+    path('Staff/Add/client',staff_view.ADD_CLIENT,name="add_client"),
     path('Staff/Client/View',staff_view.CLIENT_VIEW,name="view_client"),
     path('Staff/Client/Edit/<str:id>/',staff_view.CLIENT_EDIT,name='edit_client'),
     path('Staff/Client/Update',staff_view.CLIENT_UPDATE,name='update_client'),
@@ -62,10 +71,13 @@ urlpatterns = [
     path('staff/rowmaterials/form/', staff_view.row_materials_form, name='add_row_materials'),
     path('staff/view/rowmaterials/', staff_view.view_row_materials, name='view_row_materials'),
     path('staff/view/rowmaterials/delete/<str:id>/', staff_view.delete_row_materials, name='delete_row_materials'),
-
+    path('total/clients/created-by-staff',staff_view.total_clients_created_by_staff,name="total_clients_created_by_staff"),
+ 
+    
     #client pannel
     path('Client/Home',client_view.CLIENT_HOME,name='client_home'),
     path('clients/view/bills/', client_view.client_bills, name='client_bills'),
+    # path('client/home/bills/',client_view.client_total_balance,name="client_total_balance"),
      
 
 

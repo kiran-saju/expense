@@ -1,43 +1,51 @@
-
 {% extends 'CLIENT/clientbase.html' %}
     
 {% block content%}
 
 <style>
-    
-.rectangle {
+    .rectangle {
+        background-color: #f2f5f8; /* Light blue-gray background */
+        border: 1px solid #e9ecef; /* Light border color */
+        border-radius: 8px; /* Slightly rounded corners */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+        padding: 16px; /* Reduced padding for a sleeker look */
+        margin-bottom: 20px; /* Slightly reduced bottom margin */
+        transition: all 0.3s ease; /* Smooth transition on hover or focus */
 
-  background-color: #f8f9fa; 
-  border: 1px solid #ced4da;
-  border-radius: 10px;
-  padding: 20px; /* Padding inside the div */
-  margin-bottom: 80px; /* Spacing between divs */
-  
-  
-}
+    }
 
+    .rectangle:hover,
+    .rectangle:focus {
+        transform: translateY(-2px); /* Move up slightly on hover or focus */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhanced box shadow */
+    }
+
+    a {
+        text-decoration: none;
+    }
 </style>
-<h3 style="text-align: center;">Welcome To Client Home Page</h3> <br><br>
-<div class="container">
-  <div class="row">
-    <div class="col-md-4">
-      <div class="rectangle">
-    
-      
-        <h4>Total Amount Paid</h4>
-        <p>${{ total_payment }}</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="rectangle">
-        <h4>Total Balance </h4>
-        <p>${{ total_balance }}</p>
-      </div>
-    </div>
 
-  </div>
+<h3 style="text-align: center;">Welcome To Client Home Page</h3> <br><br>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <a href="{% url 'client_bills' %}" >
+                <div class="rectangle">
+                    <h4>Total Amount Paid</h4>
+                    <p>${{ total_payment }}</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{% url 'client_bills' %}">
+                <div class="rectangle">
+                    <h4>Total Balance </h4>
+                    <p>${{ total_balance }}</p>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
-
-

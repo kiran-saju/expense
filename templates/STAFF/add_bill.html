@@ -1,20 +1,36 @@
-<a href="{% url 'staff_home' %}">HOME</a>
-<form method="post">
-   <h1>Add bill to {{client}}</h1>
+{% extends 'STAFF/staffbase.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<form method="post" class="mt-4">
+    <h1>Add bill to {{client}}</h1>
     {% csrf_token %}
-    <!-- Other form fields -->
-    <label for="">Installment number:</label>
-    {{ form.installment_number }}
-    <br><br>
-    <label for="">Payment amount: </label>
-    {{ form.payment_amount }}
-    <br><br>
-    <label for="">Staff Name:</label>
-   <input type="text" name="first_name" value=" {{user.first_name}}" readonly>
-    <br><br>
-    
-   <label for="">Due Date:</label>
-    <input type="date" name="date">
-    <br><br>
-    <button type="submit">Submit</button>
+    <div class="form-group">
+        <label for="installment_number">Installment number:</label>
+        <input type="text" name="installment_number" class="form-control" id="installment_number">
+    </div>
+    <div class="form-group">
+        <label for="payment_amount">Payment amount:</label>
+        <input type="text" name="payment_amount" class="form-control" id="payment_amount">
+    </div>
+    <div class="form-group">
+        <label for="first_name">Staff Name:</label>
+        <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control" readonly>
+    </div>
+    <div class="form-group">
+        <label for="date">Due Date:</label>
+        <input type="date" name="date" class="form-control" id="date">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+{% endblock %}

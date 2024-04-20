@@ -1,20 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <a href="{% url 'staff_home' %}">HOME</a>
-    <form action="{% url 'add_installment' %}">
-    {% csrf_token %}
-    <label for="">Client Name</label> <input type="text" name="client"> <br><br>
-        <label for="">Installment Number</label><textarea name="installment_number" id="" cols="30" rows="10"></textarea><br><br>
-        <label for="">Payment Amount</label> <input type="text" name="payment_amount"> <br><br>
-        <label for="">Due Date</label> <input type="text" name="due_date"> <br><br>
-        <label for="">Payment Date</label> <input type="text" name="payment_date"> <br><br>
-        <button type="submit">Add Installments</button>  
-    </form>
-</body>
-</html>
+{% extends 'STAFF/staffbase.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            {% if messages %}
+            <div class="alert alert-info" role="alert">
+                <ul class="list-unstyled mb-0">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            <form action="{% url 'add_installment' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="clientName">Client Name</label>
+                    <input type="text" name="client" class="form-control" id="clientName">
+                </div>
+                <div class="form-group">
+                    <label for="installmentNumber">Installment Number</label>
+                    <input type="text" name="installment_number" class="form-control" id="installmentNumber">
+                </div>
+                <div class="form-group">
+                    <label for="paymentAmount">Payment Amount</label>
+                    <input type="text" name="payment_amount" class="form-control" id="paymentAmount">
+                </div>
+                <div class="form-group">
+                    <label for="dueDate">Due Date</label>
+                    <input type="date" name="due_date" class="form-control" id="dueDate">
+                </div>
+                <div class="form-group">
+                    <label for="paymentDate">Payment Date</label>
+                    <input type="date" name="payment_date" class="form-control" id="paymentDate">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Installments</button>  
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

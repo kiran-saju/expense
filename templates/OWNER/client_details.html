@@ -1,0 +1,45 @@
+{% extends 'OWNER/ownerbase.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<table id="example" class="table table-striped">
+     <thead>
+        <tr>
+            <th colspan="10" style="text-align: center; font-size: large;">CLIENT BILLS</th>
+        </tr>
+            <tr>
+                <th>Bill Id</th>
+                <th>Client Name</th>
+                <th>Installment Section</th>
+                <th>Amount</th>
+                <th>Current payment Status</th>
+                <th>Due Date</th>
+                <th>Paid Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in bills %}
+            <tr>
+                <td>{{ bill.id }}</td>
+                <td><a href="{% url 'client_bills' client_id=bill.client.id %}">{{ bill.client.admin.first_name }} {{ bill.client.admin.last_name }}</a></td>
+                <td>{{ bill.installment_number }}</td>
+                <td>{{ bill.payment_amount }}</td>
+                <td>{{ bill.paid_status }}</td>
+                <td>{{ bill.due_date }}</td>
+                <td>{{ bill.paid_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+
+{% endblock %}

@@ -1,49 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-  <a href="{% url 'staff_home' %}">HOME</a>
-    <h1>Make purchase</h1>
-<form method="post">
-  {% csrf_token %}
-  <label for=""> supplier:</label>
-    {{ form.supplier }}
-    <br><br>
- 
-    <label for="">Staff Name:</label>
-   <input type="text" name="first_name" value=" {{user.first_name}}&nbsp;{{user.last_name}}" readonly>
-    <br><br>
+{% extends 'STAFF/staffbase.html' %}
 
-    <label for="">Row Materials: </label>
-    {{ form.row_materials }}
-    <br><br>
-    
-   <label for="">Quantity:</label>
-    {{ form.quantity }}
-    <br><br>
+{% block title %}Dashboard{% endblock %}
 
-    <label for="">Payment Amount</label>
-    {{ form.payment_amount }}
-    <br><br>
 
-    <!-- <label for="">Due Date</label>
-    {{ form.due_date }}
-    <br><br>
 
-    
-    <label for="">Due Date</label>
-    {{ form.due_date }}
-    <br><br>
+{% block content %}
 
-     -->
-    <label for="">Paid Status</label>
-    {{ form.paid_status }}
-    <br><br>
-  <button type="submit">Save</button>
-</form>
-</body>
-</html>
+
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+    <h1>This is Installment Page</h1>
+    <table border="1" border-collapse:collapse;>
+        <tr>
+            <thead>Installment Details</thead>
+            <th>Client ID</th>
+            <th>Client Name</th>
+            <th>Installment Number</th>
+            <th>Payment Amount</th>
+            <th>Due Date</th>
+            <th>Payment Date</th>
+        </tr>
+        <tbody>
+            {% for i in installment %}
+            <tr>
+                <td>{{i.id}}</td>
+                <td>{{i.client}}</td>
+                <td>{{i.installment_number}}</td>
+                <td>{{i.payment_amount}}</td>
+                <td>{{i.due_date}}</td>
+                <td>{{i.payment_date}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    {% endblock %}

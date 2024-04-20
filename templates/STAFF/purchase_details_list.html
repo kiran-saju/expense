@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-    <h1>Purchase Details</h1>
-<table border="1">
+{% extends 'STAFF/staffbase.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+   <table id="example" class="table table-striped">
     <thead>
         <tr>
             <th>Purchase Id</th>
@@ -37,14 +33,20 @@
             <td>{{ purchase.paid_date }}</td>   
             <td>{{ purchase.paid_status }}</td> 
             <td>
-                <a href="{% url 'purchase_details_update' purchase.id %}">Update</a>
+                <a href="{% url 'purchase_details_update' purchase.id %}" class="btn btn-primary btn-sm">Update</a>
             </td>
             <td>
-                <a href="{% url 'purchase_details_delete' purchase.id %}">Delete</a> 
+                <a href="{% url 'purchase_details_delete' purchase.id %}" class="btn btn-danger btn-sm">Delete</a> 
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-</body>
-</html>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+
+{% endblock %}

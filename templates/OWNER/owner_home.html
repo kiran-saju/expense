@@ -1,22 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <a href="{% url 'owner_home' %}">Home</a>
-    This is Owner Page
-    <h4><strong>welcome</strong><span>{{user.first_name}}&nbsp;{{user.last_name}}</span></h4>
-    <a href="{% url 'profile' %}">My profile</a> <br> <br>
-    <a href="{% url 'add_staff' %}">staff Add</a> <br> <br>
-    <a href="{% url 'view_staff' %}">Staff view</a> <br> <br>
-    <a href="{% url 'client_all_details' %}">Client List</a> <br> <br>
-    <a href="{% url 'owner_view_supplier' %}">Supplier List</a> <br> <br>
-    <a href="{% url 'view_bills_owner' %}">Client Bills</a> <br> <br>
+{% extends 'OWNER/ownerbase.html' %}
 
-    <a href="{% url 'view_total_balance_per_client' %}">Bills Per Vlient</a> <br><br>
-    <a href="{% url 'logout' %}">Logout</a> <br> <br>
-</body>
-</html>
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<style>
+.rectangle {
+  background-color: #f8f9fa; 
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  padding: 20px; /* Padding inside the div */
+  margin-bottom: 80px; /* Spacing between divs */
+}
+</style>
+<h3 style="text-align: center;">Welcome To Admin Home Page</h3> <br><br>
+<div class="container">
+  <div class="row">
+ 
+
+    <div class="col-md-4">
+        <div class="rectangle">
+          <h4>Bills Charged To Clients: {{  total_payment_amount }}</h4> <!-- Display the total clients count here -->
+        </div>
+      </div>
+       
+      <div class="col-md-4">
+        <div class="rectangle">
+          <h4>Client's Paid Amount: {{  client_total_paid_amount }}</h4> <!-- Display the total clients count here -->
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="rectangle">
+          <h4>Client's Payment Balance: {{ client_total_balance_payment }}</h4> <!-- Display the total clients count here -->
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="rectangle">
+          <h4>Paid amount to suppliers: {{  total_payment_supplier }}</h4> <!-- Display the total clients count here -->
+        </div>
+      </div>
+
+
+      <div class="col-md-4">
+        <div class="rectangle">
+          <h4>Supplier's Balance Payment: {{  total_payment_supplier }}</h4> <!-- Display the total clients count here -->
+        </div>
+      </div>
+
+   
+  </div>
+  
+</div>
+ <h2>client_total_balance_payment:{{ client_total_balance_payment }}</h2>
+{% endblock %}
+

@@ -1,23 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    This is Staff Page
-    <h4><strong>welcome </strong><span>{{user.first_name}}&nbsp;{{user.last_name}}</span></h4>
-    <a href="{% url 'add_client' %}">Add Client</a> <br><br>
-    <a href="{% url 'view_client' %}">View Client</a> <br><br>
-    <a href="{% url 'installment_form' %}">Add Installments</a> <br><br>
-    <a href="{% url 'supplier_form' %}">Add suppliers</a><br><br>
-    <a href="{% url 'view_suppliers' %}">View Suppliers</a><br><br>
-    <a href="{% url 'add_row_materials' %}">Add Row Materials</a> <br><br>
-    <a href="{% url 'view_row_materials' %}">View Row Materials</a> <br><br>
-    <a href="{% url 'purchase_details_create' %}">Make Purchases</a> <br> <br>
-    <a href="{% url 'purchase_details_list' %}">Purchase Details List</a> <br> <br>
-   
-    <a href="{% url 'logout' %}">Logout</a><br><br>
-</body>
-</html>
+{% extends 'STAFF/staffbase.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    
+.rectangle {
+
+  background-color: #f8f9fa; 
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  padding: 20px; /* Padding inside the div */
+  margin-bottom: 80px; /* Spacing between divs */
+  
+  
+}
+
+</style>
+<h3 style="text-align: center;">Welcome To Staff Home Page</h3> <br><br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="rectangle">
+        <h4>Total Clients</h4>
+        <p>{{total_clients_created_by_staff}}</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="rectangle">
+        <h4>Total Suppliers</h4>
+        <p>This is some information in the second data.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="rectangle">
+        <h4>Total Amount</h4>
+        <p>This is some information in the third data.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

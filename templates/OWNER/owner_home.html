@@ -4,54 +4,86 @@
 
 {% block content %}
 <style>
-.rectangle {
-  background-color: #f8f9fa; 
-  border: 1px solid #ced4da;
-  border-radius: 10px;
-  padding: 20px; /* Padding inside the div */
-  margin-bottom: 80px; /* Spacing between divs */
-}
+  .rectangle {
+      background-color: #f2f5f8; /* Light blue-gray background */
+      border: 1px solid #e9ecef; /* Light border color */
+      border-radius: 8px; /* Slightly rounded corners */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+      padding: 16px; /* Reduced padding for a sleeker look */
+      margin-bottom: 20px; /* Slightly reduced bottom margin */
+      transition: all 0.3s ease; /* Smooth transition on hover or focus */
+
+  }
+
+  .rectangle:hover,
+  .rectangle:focus {
+      transform: translateY(-2px); /* Move up slightly on hover or focus */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhanced box shadow */
+  }
+
+  a {
+      text-decoration: none;
+  }
 </style>
 <h3 style="text-align: center;">Welcome To Admin Home Page</h3> <br><br>
+
 <div class="container">
   <div class="row">
- 
-
-    <div class="col-md-4">
+  <div class="col-md-4">
+    <a href="{% url 'view_total_balance_per_client' %}" >
         <div class="rectangle">
-          <h4>Bills Charged To Clients: {{  total_payment_amount }}</h4> <!-- Display the total clients count here -->
+          <h4>Bills Charged To Clients: {{ total_payment_amount}}</h4> <!-- Display the total clients count here -->
         </div>
+      </a>
       </div>
        
       <div class="col-md-4">
+        <a href="{% url 'view_total_balance_per_client' %}" >
         <div class="rectangle">
           <h4>Client's Paid Amount: {{  client_total_paid_amount }}</h4> <!-- Display the total clients count here -->
         </div>
+      </a>
       </div>
 
       <div class="col-md-4">
+        <a href="{% url 'view_total_balance_per_client' %}" >
         <div class="rectangle">
           <h4>Client's Payment Balance: {{ client_total_balance_payment }}</h4> <!-- Display the total clients count here -->
         </div>
+      </a>
+      </div>
+
+
+      
+      <div class="col-md-4">
+        <a href="{% url 'view_total_balance_per_supplier' %}">
+        <div class="rectangle">
+          <h4>Supplier's Total Charge: {{  total_suppliers_charge }}</h4> <!-- Display the total clients count here -->
+        </div>
+      </a>
       </div>
 
       <div class="col-md-4">
+        <a href="{% url 'view_total_balance_per_supplier' %}">
         <div class="rectangle">
           <h4>Paid amount to suppliers: {{  total_payment_supplier }}</h4> <!-- Display the total clients count here -->
         </div>
+      </a>
       </div>
 
 
       <div class="col-md-4">
+        <a href="{% url 'view_total_balance_per_supplier' %}">
         <div class="rectangle">
-          <h4>Supplier's Balance Payment: {{  total_payment_supplier }}</h4> <!-- Display the total clients count here -->
+          <h4>Supplier's Balance Payment: {{  total_balance_to_supplier }}</h4> <!-- Display the total clients count here -->
         </div>
+      </a>
       </div>
 
    
   </div>
   
 </div>
- <h2>client_total_balance_payment:{{ client_total_balance_payment }}</h2>
+
 {% endblock %}
 

@@ -2,44 +2,53 @@
 
 {% block title %}Dashboard{% endblock %}
 
-
-
 {% block content %}
-
-
-
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
-    <h1>This is Installment Page</h1>
-    <table border="1" border-collapse:collapse;>
-        <tr>
-            <thead>Installment Details</thead>
-            <th>Client ID</th>
-            <th>Client Name</th>
-            <th>Installment Number</th>
-            <th>Payment Amount</th>
-            <th>Due Date</th>
-            <th>Payment Date</th>
-        </tr>
-        <tbody>
-            {% for i in installment %}
-            <tr>
-                <td>{{i.id}}</td>
-                <td>{{i.client}}</td>
-                <td>{{i.installment_number}}</td>
-                <td>{{i.payment_amount}}</td>
-                <td>{{i.due_date}}</td>
-                <td>{{i.payment_date}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-
-    {% endblock %}
+<div class="container">
+    <div class="row justify-content-center">
+        {% if messages %}
+        <div class="alert alert-info" role="alert">
+            <ul class="list-unstyled mb-0">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <div class="card">
+            <div class="card-header">Make Purchases</div>
+            <div class="card-body">
+                <table class="table">
+                    <form class="form-container" method="post">
+                        {% csrf_token %}
+                        <tbody>
+                            <tr>
+                                <td><label for="id_supplier" class="form-label">Supplier:</label></td>
+                                <td>{{ form.supplier }}</td>
+                            </tr>
+                            <tr>
+                                <td><label for="id_row_materials" class="form-label">Row Materials:</label></td>
+                                <td>{{ form.items }}</td>
+                            </tr>
+                            <tr>
+                                <td><label for="id_quantity" class="form-label">Bill No:</label></td>
+                                <td>{{ form.billno }}</td>
+                            </tr>
+                            <tr>
+                                <td><label for="id_payment_amount" class="form-label">Payment Amount:</label></td>
+                                <td>{{ form.payment_amount }}</td>
+                            </tr>
+                            <tr>
+                                <td><label for="id_paid_status" class="form-label">Paid Status:</label></td>
+                                <td>{{ form.paid_status }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center;"><button class="btn btn-primary" type="submit">Save</button></td>
+                            </tr>
+                        </tbody>
+                    </form>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

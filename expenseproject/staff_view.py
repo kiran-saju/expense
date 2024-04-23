@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from app.models import Customuser, Installment, PurchaseDetails, Staff,Client,Bill, Supplier, RowMaterials
-from app.forms import BillForm,BillPaidStatusForm, ClientForm,SupplierForm,RowMaterialForm,PurchaseForm
+from app.forms import BillForm,BillPaidStatusForm,SupplierForm,RowMaterialForm,PurchaseForm
 
 @login_required
 def STAFF_HOME(request):
@@ -11,70 +11,57 @@ def STAFF_HOME(request):
 
 @login_required
 def ADD_CLIENT(request):
-    if request.method == "POST":
-        profile_pic = request.FILES.get('profile_pic')
-        first_name = request.POST.get('first_name') 
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        address = request.POST.get('address')
-        gender = request.POST.get('gender')
-        project_name = request.POST.get('project_name')
-        project_description = request.POST.get('project_description')
 
-        # Validate form data
-        if not all([profile_pic, first_name, last_name, email, username, password, address, gender, project_name, project_description]):
-            messages.error(request, 'Please fill in all required fields.')
-            return redirect('add_client')
+    if request.method=="POST":
+        profile_pic= request.FILES.get('profile_pic')
+        first_name= request.POST.get('first_name') 
+        last_name= request.POST.get('last_name')
+        email= request.POST.get('email')
+        username= request.POST.get('username')
+        password= request.POST.get('password')
+        address= request.POST.get('address')
+        gender= request.POST.get('gender')
+        project_name=request.POST.get('project_name')
+        project_description=request.POST.get('project_description')
 
         if Customuser.objects.filter(email=email).exists():
-            messages.error(request, 'Email already exists.')
+            messages.warning(request,'Email Already exists')
             return redirect('add_client')
-        
         if Customuser.objects.filter(username=username).exists():
-            messages.error(request, 'Username already exists.')
+            messages.warning(request,"Username Already exists")
             return redirect('add_client')
+        else:
+            user= Customuser(
+                first_name=first_name,
+                last_name=last_name,
+                username = username,
+                email=email,
+                profile_pic = profile_pic,
+                user_type= 3
+            )
+            user.set_password(password)
+            user.save()
 
-        # Create Customuser (client)
-        user = Customuser(
-            first_name=first_name,
-            last_name=last_name,
-            username=username,
-            email=email,
-            profile_pic=profile_pic,
-            user_type=3  # Assuming '3' corresponds to 'Client' in your user_type choices
-        )
-        user.set_password(password)
-        user.save()
-
-        # Create Client object associated with the Customuser
-        client = Client(
-            staff=request.user.staff,  # Assuming you have a way to get the staff user who is adding the client
-            address=address,
-            gender=gender,
-            project_name=project_name,
-            project_description=project_description,
-        )
-        client.save()
-
-        messages.success(request, 'New client added successfully.')
-        return redirect('add_client')
-
-    return render(request, 'STAFF/add_client.html')
-
+            client= Client(
+                admin=user,
+                address=address,
+                gender=gender,
+                project_name=project_name,
+                project_description= project_description,
+            )
+            client.save()
+            messages.success(request,'New client is successfully added')
+            return redirect('add_client')
+    return render(request,'STAFF/add_client.html')
 
 @login_required
 def CLIENT_VIEW(request):
-    staff = request.user.staff
-
-    clients = Client.objects.filter(staff=staff)
-    
-    context = {
-        'clients': clients
+    client = Client.objects.all()
+    context={
+        'client': client
     }
-    return render(request, 'STAFF/view_client.html', context)
-    
+    return render(request,'STAFF/view_client.html',context)
+
 
 @login_required
 def CLIENT_EDIT(request,id):

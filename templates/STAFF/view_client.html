@@ -4,7 +4,11 @@
 
 {% block content %}
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-   <table id="example" class="table table-striped">
+<div class="container mt-4">
+    <div class="mb-3">
+        <button id="toggleEmail" class="btn btn-primary">View Email Column</button>
+    </div>   
+<table id="example" class="table table-striped">
     <thead>
         <tr>
             <th>id</th>
@@ -17,8 +21,8 @@
             <th>Description</th>
             <th>Create Bills</th>
             <th>View Bills</th>
-            <th>Edit Details</th>
-            <th>Delete Client</th>
+            <th>Update</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -51,9 +55,25 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#example').DataTable();
+        var table = $('#example').DataTable({
+            "columnDefs": [
+                {
+                    "targets": [3], // Index of the Email column
+                    "visible": false
+                }
+            ]
+        });
+
+        $('#toggleEmail').on('click', function () {
+            var column = table.column(3); // Index of the Email column
+            column.visible(!column.visible());
+        });
     });
 </script>
+
 {% endblock %}

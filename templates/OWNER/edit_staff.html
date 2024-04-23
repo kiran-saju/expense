@@ -1,32 +1,54 @@
-
-
 {% extends 'OWNER/ownerbase.html' %}
-
 
 {% block title %}Dashboard{% endblock %}
 
-
-
 {% block content %}
-
-    <form class="form-container" action="{% url 'update_staff' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        Profile Picture: <input class="form-input file-input" type="file" name="profile_pic">
-        <input class="form-input" type="text" name="staff_id" value="{% for i in staff %}{{i.admin.id}}{% endfor %}" hidden>
-        First Name: <input class="form-input" type="text" name="first_name" value="{% for i in staff%}{{i.admin.first_name}}{% endfor %}"> 
-        Last name: <input class="form-input" type="text" name="last_name" value="{% for i in staff%}{{i.admin.last_name}}{% endfor %}"> 
-        Email: <input class="form-input" type="text" name="email" value="{% for i in staff%}{{i.admin.email}}{% endfor %}">
-        Address:<textarea class="form-input" name="address" id="" cols="10" rows="1">{% for i in staff%}{{i.address}}{% endfor %}</textarea>
-        Gender:
-            <select class="form-input select-input" name="gender" id="" required>
-                <option>Select Gender</option>
-                <option value="Female">Female</option>
-                <option value="Male">Male</option>
-                <option value="Others">Others</option>
-            </select> <br><br>
-        Username: <input class="form-input" type="text" name="username" value="{% for i in staff%}{{i.admin.username}}{% endfor %}"> 
-        Password: <input class="form-input" type="text" name="password"> 
-        <button class="submit-btn" type="submit">Update Staff</button>
-    </form>
-
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form class="mt-5" action="{% url 'update_staff' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="profile_pic" class="form-label">Profile Picture:</label>
+                        <input type="file" class="form-control" id="profile_pic" name="profile_pic">
+                    </div>
+                    <input type="text" name="staff_id" value="{% for i in staff %}{{i.admin.id}}{% endfor %}" hidden>
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">First Name:</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{% for i in staff%}{{i.admin.first_name}}{% endfor %}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Last Name:</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{% for i in staff%}{{i.admin.last_name}}{% endfor %}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="text" class="form-control" id="email" name="email" value="{% for i in staff%}{{i.admin.email}}{% endfor %}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address:</label>
+                        <textarea class="form-control" id="address" name="address" rows="3">{% for i in staff%}{{i.address}}{% endfor %}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Gender:</label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option>Select Gender</option>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username:</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{% for i in staff%}{{i.admin.username}}{% endfor %}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Staff</button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -4,14 +4,14 @@ class Customuser(AbstractUser):
     USER=(
         (1,'Owner'),
         (2,'Staff'),
-        (3,'Client'),
+        (3,'Student'),
     )
     user_type=models.CharField(choices=USER,max_length=50,default=1)
     profile_pic=models.ImageField(upload_to='media/profile_pic')
 
 class Staff(models.Model):
    
-    admin=models.OneToOneField(Customuser, on_delete=models.CASCADE,null=True, blank=True)
+    admin=models.OneToOneField(Customuser, on_delete=models.CASCADE)
     address=models.TextField()
     gender=models.CharField(max_length=100)
     created_at=models.DateTimeField(auto_now_add=True)
@@ -21,16 +21,15 @@ class Staff(models.Model):
         return self.admin.first_name + " " + self.admin.last_name
 
 class Client(models.Model):
-    staff = models.ForeignKey(Staff, on_delete=models.CASCADE,null=True, blank=True)
+    admin=models.OneToOneField(Customuser,on_delete=models.CASCADE)
     address=models.TextField()
     gender=models.CharField(max_length=100)
-    project_name=models.CharField(max_length=100,null=True, blank=True)
-    project_description=models.TextField(null=True, blank=True)
+    project_name=models.CharField(max_length=100)
+    project_description=models.TextField()
     created_by = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_clients')
 
     def __str__(self):
         return self.admin.first_name + " " + self.admin.last_name
-
 
 
 #common installment table to store installments from clients
@@ -83,4 +82,5 @@ class PurchaseDetails(models.Model):
 
     # def __str__(self):
     #     return self.item_name
+
 

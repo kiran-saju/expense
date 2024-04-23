@@ -4,40 +4,47 @@
 
 {% block content %}
 <style>
-    
-.rectangle {
+  .rectangle {
+      background-color: #f2f5f8; /* Light blue-gray background */
+      border: 1px solid #e9ecef; /* Light border color */
+      border-radius: 8px; /* Slightly rounded corners */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+      padding: 16px; /* Reduced padding for a sleeker look */
+      margin-bottom: 20px; /* Slightly reduced bottom margin */
+      transition: all 0.3s ease; /* Smooth transition on hover or focus */
 
-  background-color: #f8f9fa; 
-  border: 1px solid #ced4da;
-  border-radius: 10px;
-  padding: 20px; /* Padding inside the div */
-  margin-bottom: 80px; /* Spacing between divs */
-  
-  
-}
+  }
 
+  .rectangle:hover,
+  .rectangle:focus {
+      transform: translateY(-2px); /* Move up slightly on hover or focus */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhanced box shadow */
+  }
+
+  a {
+      text-decoration: none;
+  }
 </style>
 <h3 style="text-align: center;">Welcome To Staff Home Page</h3> <br><br>
 <div class="container">
   <div class="row">
     <div class="col-md-4">
+      <a href="{% url 'view_client' %}">
       <div class="rectangle">
         <h4>Total Clients</h4>
-        <p>{{total_clients_created_by_staff}}</p>
+        <h5>{{total_clients}}</p></h5>
       </div>
+    </a>
     </div>
     <div class="col-md-4">
+      <a href="{% url 'view_suppliers' %}">
       <div class="rectangle">
         <h4>Total Suppliers</h4>
-        <p>This is some information in the second data.</p>
+        <h5>{{total_supplier}}</h5>
       </div>
+    </a>
     </div>
-    <div class="col-md-4">
-      <div class="rectangle">
-        <h4>Total Amount</h4>
-        <p>This is some information in the third data.</p>
-      </div>
-    </div>
+  
   </div>
 </div>
 {% endblock %}

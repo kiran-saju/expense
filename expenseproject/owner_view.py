@@ -9,7 +9,29 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 @login_required
 def OWNER_HOME(request):
-    return render(request,'OWNER/owner_home.html')
+    total_payment_amount = Bill.objects.aggregate(total_payment=Sum('payment_amount'))['total_payment']
+    
+    client_total_paid_amount = Bill.objects.filter(paid_status=True).aggregate(total_sum=Sum('payment_amount'))['total_sum']
+    
+    client_total_balance_payment= Bill.objects.filter(paid_status=False).aggregate(total_sum=Sum('payment_amount'))['total_sum']
+    
+    total_suppliers_charge = PurchaseDetails.objects.aggregate(total_sum=Sum('payment_amount'))['total_sum']
+
+    
+    total_balance_to_supplier =  PurchaseDetails.objects.filter(paid_status=False).aggregate(total_sum=Sum('payment_amount'))['total_sum']
+
+    total_payment_supplier = PurchaseDetails.objects.filter(paid_status=True).aggregate(total_sum=Sum('payment_amount'))['total_sum']
+
+    context={
+        'client_total_paid_amount':client_total_paid_amount,
+        'client_total_balance_payment':client_total_balance_payment,
+        "total_payment_amount":total_payment_amount,
+        'total_suppliers_charge':total_suppliers_charge,
+        'total_payment_supplier':total_payment_supplier,
+        'total_balance_to_supplier':total_balance_to_supplier,
+    }
+    
+    return render(request,'OWNER/owner_home.html',context)
 
 @login_required
 def ADD_STAFF(request):
@@ -226,15 +248,15 @@ def total_clients(request):
     return render(request,'total_clients.html',{'total_clients': total_clients_count})
 
 
-def total_clients_bills_charge(request):
-    total_payment_amount = Bill.objects.aggregate(total_payment=Sum('payment_amount'))['total_payment']
+# def total_clients_bills_charge(request):
+#     total_payment_amount = Bill.objects.aggregate(total_payment=Sum('payment_amount'))['total_payment']
 
-    if total_payment_amount is not None:
-        print("Total payment amount from all clients:", total_payment_amount)
-    else:
-        print("There are no records.")
+#     if total_payment_amount is not None:
+#         print("Total payment amount from all clients:", total_payment_amount)
+#     else:
+#         print("There are no records.")
 
-    return render(request, "total_clients_bills_charge.html", {'total_payment_amount': total_payment_amount})
+#     return render(request, "total_clients_bills_charge.html", {'total_payment_amount': total_payment_amount})
 
 def client_total_paid_amount(request):
     client_total_paid_amount = Bill.objects.filter(paid_status=True).aggregate(total_sum=Sum('payment_amount'))['total_sum']

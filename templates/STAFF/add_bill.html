@@ -1,36 +1,48 @@
-{% extends 'STAFF/staffbase.html' %}
+<!-- add_bill.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Bill</title>
+</head>
+<body>
+    <h1>Add Bill</h1>
+    <form method="POST">
+        {% csrf_token %}
 
-{% block title %}Dashboard{% endblock %}
+        <!-- Client Name (Auto-populated) -->
+        <label for="id_client_name">Client Name:</label>
+        <input type="text" name="client_name" id="id_client_name" value="{{ client_name }}" readonly>
+        <br><br>
 
-{% block content %}
+        <!-- Installment Select Box -->
+        <label for="id_installment_number">Installment:</label>
+        <select name="installment_number" id="id_installment_number">
+            {% for choice in form.installment_number.field.choices %}
+                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
 
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+        <!-- Payment Amount -->
+        <label for="id_payment_amount">Payment Amount:</label>
+        <input type="number" name="payment_amount" id="id_payment_amount">
+        <br><br>
 
-<form method="post" class="mt-4">
-    <h1>Add bill to {{client}}</h1>
-    {% csrf_token %}
-    <div class="form-group">
-        <label for="installment_number">Installment number:</label>
-        <input type="text" name="installment_number" class="form-control" id="installment_number">
-    </div>
-    <div class="form-group">
-        <label for="payment_amount">Payment amount:</label>
-        <input type="text" name="payment_amount" class="form-control" id="payment_amount">
-    </div>
-    <div class="form-group">
-        <label for="first_name">Staff Name:</label>
-        <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control" readonly>
-    </div>
-    <div class="form-group">
-        <label for="date">Due Date:</label>
-        <input type="date" name="date" class="form-control" id="date">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-{% endblock %}
+        <!-- Due Date -->
+        <label for="id_due_date">Due Date:</label>
+        <input type="date" name="due_date" id="id_due_date">
+        <br><br>
+
+      
+
+        <!-- Paid Status Checkbox -->
+        <label for="id_paid_status">Paid Status:</label>
+        <input type="checkbox" name="paid_status" id="id_paid_status">
+        <br><br>
+
+        <button type="submit">Create Bill</button>
+    </form>
+</body>
+</html>

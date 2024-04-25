@@ -126,7 +126,7 @@ def DELETE_CLIENT(request,id):
 def create_bill(request, id):
     client = get_object_or_404(Client, id=id)
     client_name = f"{client.admin.first_name} {client.admin.last_name}" if client.admin else "No Client Assigned"
-    staff_name = f"{request.user.username}"
+    staff_name = f"{request.user.first_name} {request.user.last_name}" if request.user else "No Staff Logged In"
 
     all_installments = Installment.objects.all()
 
@@ -143,7 +143,7 @@ def create_bill(request, id):
         if form.is_valid():
             bill = form.save(commit=False)
             bill.client = client
-            bill.staff_name = request.user.staff  # Automatically set staff name to logged-in user
+            # Automatically set staff name to logged-in user
             bill.save()
             return redirect('view_client')  # Redirect to client detail page
         else:
@@ -153,6 +153,9 @@ def create_bill(request, id):
         form.fields['installment_number'].choices = choices
 
     return render(request, 'STAFF/add_bill.html', {'client_name': client_name, 'staff_name': staff_name, 'form': form})
+
+
+
 
 @login_required
 def view_bills_staff(request, client_id):

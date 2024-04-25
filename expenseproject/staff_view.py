@@ -122,34 +122,37 @@ def DELETE_CLIENT(request,id):
 
 
 
-import logging
-logger = logging.getLogger(__name__)
 @login_required
 def create_bill(request, id):
     client = get_object_or_404(Client, id=id)
-    
+    client_name = f"{client.admin.first_name} {client.admin.last_name}" if client.admin else "No Client Assigned"
+    staff_name = f"{request.user.username}"
+
     all_installments = Installment.objects.all()
-    
+
     used_installments = Bill.objects.filter(client=client).values_list('installment_number__id', flat=True)
-    
+
     # Exclude used installment numbers from all_installments
     available_installments = all_installments.exclude(id__in=used_installments)
 
     # Construct choices list
     choices = [(inst.id, inst.installment_number) for inst in available_installments]
-    
+
     if request.method == 'POST':
         form = BillForm(request.POST)
         if form.is_valid():
             bill = form.save(commit=False)
             bill.client = client
+            bill.staff_name = request.user.staff  # Automatically set staff name to logged-in user
             bill.save()
-            return redirect('view_client') 
+            return redirect('view_client')  # Redirect to client detail page
+        else:
+            logger.error("Form is not valid: %s" % form.errors)
     else:
         form = BillForm()
         form.fields['installment_number'].choices = choices
-        
-    return render(request, 'STAFF/add_bill.html', {'client': client, 'form': form})
+
+    return render(request, 'STAFF/add_bill.html', {'client_name': client_name, 'staff_name': staff_name, 'form': form})
 
 @login_required
 def view_bills_staff(request, client_id):
